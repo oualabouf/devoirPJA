@@ -22,9 +22,9 @@ public class Server {
 	public static void main(String[] args) {
 		ObjectInputStream in=null;
 		ObjectOutputStream out=null;
-		while(true) {
+		
 			try {
-				
+				while(true) {
 				if (soc == null || !soc.isBound()) {
                     soc = new ServerSocket(5757);
                     Socket s =soc.accept();
@@ -37,9 +37,7 @@ public class Server {
 				}
 				
 				String path =(String) in.readObject();
-				System.out.println(path);
 				
-				//path = "Get E:/test";
 				
 				
 				
@@ -63,7 +61,7 @@ public class Server {
 								out.writeObject( directoryName );
 						}
 					}else {
-						out.writeObject("ERROR : "+result[1]+" does not exist");
+						out.writeObject("ERRORÂ : "+result[1]+" does not exist");
 					}
 					
 					
@@ -84,20 +82,26 @@ public class Server {
 							
 							i.close();
 						} catch (Exception e) {// Catch exception if any
-							out.writeObject("ERROR : "+result[1]+" does not exist");
+							out.writeObject("ERRORÂ : "+result[1]+" does not exist");
 						}
 						
 						
 					}else {
-						out.writeObject("ERROR : "+path+" is not a valable request");
+						if(result[0].equals("QUIT")) {
+							out.writeObject("END");
+						}else {
+						out.writeObject("ERRORÂ : "+path+" is not a valable request");
+						}
 					}
 				}
 				
 				out.writeObject("<!--STOP-->");
 			
-			
-		}catch(Exception e) {System.out.println("Server Exception :"+e.getMessage());}}
+				}
+		}catch(Exception e) {System.out.println("Server Exception :"+e.getMessage());}
 			
 	}
+	
+}
 	
 }
